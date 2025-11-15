@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><!-- EDIT: Give your site a title here -->Leafy – Your Nature-Inspired Project</title>
+  <meta name="description" content="Animated nature-tone site for project presentation, inspired by eki.my.id"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #eef6ed;
+      --bg-alt: #deeed6;
+      --accent: #1c3b2d;
+      --accent-light: #48b685;
+      --accent-dark: #2c5842;
+      --hero-gradient: linear-gradient(120deg, #cbe3c7 0%, #f2fffc 100%);
+      --wave1: #c7e2cd;
+      --wave2: #deeed6;
+      --wave3: #f2fffc;
+      --radius: 20px;
+      --shadow: 0 10px 30px 0 rgba(51,85,64,0.10);
+      --transition: 0.7s cubic-bezier(.61,-0.5,.34,1.5);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-main);
+      color: var(--accent);
+      font-family: 'Nunito', Arial, sans-serif;
+      scroll-behavior: smooth;
+      transition: background 0.5s;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      background: rgba(238,246,237,0.86);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2rem;
+      box-shadow: 0 2px 18px rgba(40,80,64,0.04);
+      backdrop-filter: blur(5px);
+      transition: background 0.5s;
+    }
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-light);
+      letter-spacing: 2.5px;
+      text-shadow: 0 2px 4px rgba(72,182,133,0.07);
+    }
+    nav a {
+      margin: 0 1.2rem;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.08em;
+      text-decoration: none;
+      padding-bottom: 4px;
+      background: linear-gradient(var(--accent-light),var(--accent-light)) 0 100%/0 2px no-repeat;
+      transition: background-size .4s, color .18s;
+    }
+    nav a.active, nav a:hover, nav a:focus {
+      color: var(--accent-light);
+      background-size: 100% 2px;
+    }
+    @media (max-width: 700px) {
+      header { flex-direction: column; align-items: flex-start; padding: 0.7rem 1em;}
+      nav { width: 100%; display: flex; justify-content: center;}
+      nav a { margin: 0 0.5rem; }
+    }
+    .hero {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 7.5rem 1rem 2rem 1rem;
+      background: var(--hero-gradient);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInBg .6s cubic-bezier(.61,-0.5,.34,1.5);
+    }
+    @keyframes fadeInBg { from { filter: blur(6px) opacity(0.3);} to { filter:none; opacity:1; } }
+    .hero-wave {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 110px; pointer-events: none; z-index: 1;
+    }
+    .hero-avatar {
+      width: 128px; height: 128px; border-radius:50%;
+      object-fit: cover;
+      margin-bottom: 1.3rem;
+      box-shadow: 0 6px 36px 0 rgba(50,80,53,0.11);
+      border: 6px solid #deeed6;
+      opacity: 0; transform: scale(0.85) translateY(-20px);
+      animation: fadeInPop 1.1s 0.5s forwards;
+    }
+    @keyframes fadeInPop { to { opacity: 1; transform: none; } }
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+      margin: 0.2em 0;
+      letter-spacing: 2.5px;
+      opacity: 0;
+      background: linear-gradient(97deg,var(--accent-dark),var(--accent-light) 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeTxtIn 1.2s 0.7s forwards cubic-bezier(.77,-0.36,.23,1.3);
+    }
+    @keyframes fadeTxtIn { 100% { opacity:1; } }
+    .hero-animated-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      min-height: 2em;
+      letter-spacing: 0.7px;
+      opacity: 0;
+      animation: fadeInUp 1s 1.4s forwards;
+      white-space: nowrap; overflow: hidden; border-right: 3px solid var(--accent-light);
+      width: 20ch; /* Animate up to 20 letters */
+    }
+    @keyframes fadeInUp { 100% { opacity: 1; transform: none; } }
+    .hero-btn {
+      margin-top: 2.2rem;
+      padding: 1.2em 2.6em;
+      background: var(--accent-light);
+      color: #fff;
+      border: none;
+      border-radius: 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.24rem;
+      letter-spacing: 1.7px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transform: scale(0.94);
+      opacity: 0;
+      animation: fadeInScale 1.2s 2s forwards;
+      transition: background 0.19s, color 0.19s, transform 0.19s;
+    }
+    .hero-btn:hover, .hero-btn:focus { filter:brightness(1.13); background:var(--accent-dark); color:#fff; transform:scale(1.04);}
+    @keyframes fadeInScale { to { opacity: 1; transform: scale(1);} }
+    section {
+      padding: 4.5rem 1rem 3.8rem 1rem;
+      max-width: 950px;
+      margin: 20px auto 2.9rem auto;
+      background: var(--bg-alt);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(55px) scale(0.98);
+      transition: opacity 0.9s var(--transition), transform 0.8s var(--transition);
+      will-change: opacity, transform;
+      position: relative;
+    }
+    section.visible { opacity: 1; transform: none;}
+    section.anim-left { transform: translateX(-70px) scale(0.98); opacity: 0; }
+    section.anim-left.visible { transform: none; opacity: 1; }
+    section.anim-right { transform: translateX(70px) scale(0.98); opacity: 0;}
+    section.anim-right.visible { transform: none; opacity: 1; }
+    section h2 {
+      color: var(--accent-dark);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.04rem;
+      margin-bottom: 0.25em;
+      letter-spacing: 2px;
+      text-align: center;
+      opacity:0; transform: translateY(30px);
+      transition: opacity .8s cubic-bezier(.68,.01,.21,.94), transform .7s cubic-bezier(.77,-0.36,.23,1.3);
+    }
+    section.visible h2 { opacity:1; transform:none; }
+    .about-text, .section-description {
+      max-width: 690px; margin: 0 auto; font-size: 1.16rem; color: var(--accent);
+      line-height: 1.68; text-align: center;
+      opacity:0; transform: translateY(16px); transition: opacity .9s, transform .6s;
+    }
+    section.visible .about-text,
+    section.visible .section-description { opacity:1; transform:none;}
+    .features-list {
+      display: flex; flex-wrap: wrap; gap: 2em;
+      justify-content: center; align-items: flex-start; padding: 2rem 0 0 0;
+    }
+    .feature-card {
+      background: #f5fcf8;
+      color: var(--accent);
+      border-radius: 19px;
+      padding: 1.4em 1.3em 1.1em 1.3em;
+      margin-bottom: 1.7em;
+      box-shadow: 0 5px 19px 0 rgba(100,150,120,.12);
+      min-width: 220px; max-width: 350px;
+      opacity: 0;
+      transform: scale(0.95) translateY(40px);
+      transition: all .53s cubic-bezier(.72,-0.4,.34,1.6);
+      font-size: 1.13em;
+    }
+    .feature-card.visible { opacity: 1; transform: none;}
+    .feature-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.2em;
+      margin: 0 0 .5em 0;
+      color: var(--accent-light);
+      letter-spacing: 1.1px;
+    }
+    @media (max-width: 780px) {
+      .features-list { flex-direction: column; align-items: center;}
+      .feature-card { max-width: 96vw;}
+    }
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: 1.2em;
+      justify-content: center; align-items: center; padding: 1.5rem 0 0.2rem 0;
+    }
+    .skill {
+      background: #f5fcf8;
+      color: var(--accent);
+      display: flex;flex-direction:column;align-items:center;
+      min-width: 120px;
+      border-radius: 19px;
+      padding: 1em 1em 0.63em 1em;
+      font-size: 1em;
+      font-weight: 800;
+      position: relative;
+      box-shadow: 0 5px 19px 0 rgba(100,150,120,.12);
+      margin: 0.5em;
+      cursor: default;
+      opacity:0; transform:scale(0.95) translateY(25px);
+      transition:all .53s cubic-bezier(.72,-0.4,.34,1.6) .1s;
+    }
+    .skill.visible { opacity:1; transform:none;}
+    .skill>svg {display:block;margin:0 0 7px 0;}
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2.1em 1.1em;
+      margin-top: 2.2em;
+      padding-bottom: 0.7em;
+    }
+    .project-card {
+      background: #fff;
+      color: var(--accent);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 24px 0 rgba(37,87,47,0.13);
+      padding: 1.1em 1em 1.6em 1em;
+      display: flex; flex-direction: column;
+      min-height: 194px;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transform: scale(0.96) translateY(25px);
+      opacity: 0;
+      transition: box-shadow 0.23s, border 0.18s, transform 0.45s cubic-bezier(.7,-0.30,.33,1.4), opacity 0.54s;
+      will-change: transform, opacity;
+    }
+    .project-card.visible {
+      transform: none;
+      opacity: 1;
+      transition-delay: 0.1s;
+    }
+    .project-card:hover, .project-card:focus {
+      box-shadow: 0 10px 44px 0 rgba(64,99,67,0.19);
+      border: 2px solid var(--accent-light);
+      z-index: 1;
+      transform: scale(1.025) translateY(-8px);
+      background: linear-gradient(127deg,#f8fffc 0%,#e6f9ec 80%);
+      transition: box-shadow 0.25s, border 0.19s, transform 0.25s, background 0.27s;
+    }
+    .project-image {
+      width: 98%; max-width: 340px; min-height: 96px; height: auto; border-radius: 13px; margin: 0 auto 1.27em auto; object-fit: cover; box-shadow: 0 2px 12px 0 rgba(80,180,100,0.08);
+      display: block;
+      transition: filter 0.36s;
+      filter: grayscale(.02) blur(.2px) brightness(1); 
+    }
+    .project-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.14em;
+      color: var(--accent-dark);
+      margin: 0.13em 0 0.38em 0;
+      letter-spacing: 1.19px;
+      font-weight: 800;
+    }
+    .project-desc {
+      color: var(--accent);
+      font-size: 1.04em;
+      line-height: 1.55;
+      margin-bottom: 1em;
+    }
+    .project-links {
+      margin-top: auto;
+      display: flex; gap: 1.1em;
+    }
+    .project-link {
+      text-decoration: none;
+      color: var(--accent-light);
+      font-weight: 700;
+      font-size: 1.01em;
+      margin-top: 0.2em;
+      letter-spacing: 1px;
+      border-bottom: 2px dotted #a6e4c8;
+      padding-bottom: 1.5px;
+      transition: color 0.15s, border 0.16s;
+    }
+    .project-link:hover, .project-link:focus { color: var(--accent-dark); border-bottom: 2px solid var(--accent-light); }
+    .howitworks-steps {
+      max-width: 750px;
+      margin: 2.2em auto 0 auto;
+      padding: 1em 0 0 0;
+      list-style: none;
+      counter-reset: hiw;
+      color: var(--accent-dark);
+    }
+    .howitworks-steps li {
+      font-size: 1.14em;
+      position: relative;
+      margin-bottom: 2em;
+      padding-left: 2.7em;
+      opacity: 0;
+      transform: translateY(27px);
+      transition: all .58s cubic-bezier(.51,-0.10,.39,1.4);
+    }
+    .howitworks-steps li.visible { opacity: 1; transform: none;}
+    .howitworks-steps li:before {
+      counter-increment: hiw;
+      content: counter(hiw) ".";
+      position: absolute;
+      left: 0.5em; top: 0.2em;
+      font-size: 1.25em;
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--accent-light);
+      letter-spacing: 2px;
+    }
+    .team-list {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 2em; margin-top:2em;
+    }
+    .team-card {
+      background: #fafdff;
+      border-radius: 16px;
+      box-shadow: 0 2px 13px 0 rgba(100,150,120,0.09);
+      padding: 1.19em 2em;
+      text-align: center;
+      min-width: 160px; max-width:240px;
+      font-size: 1.07em;
+      opacity: 0; transform: translateY(34px) scale(0.98);
+      transition: all .5s cubic-bezier(.7,-0.32,.4,1.2);
+    }
+    .team-card.visible { opacity: 1; transform: none;}
+    .team-img {
+      width:52px; height:52px; border-radius:50%; object-fit:cover; margin-bottom:0.7em; background:#eee; display:inline-block;
+      box-shadow:0 2px 8px 0 rgba(100,150,90,.06);
+    }
+    .team-name {
+      font-family:'Montserrat',sans-serif; font-weight:700; letter-spacing:1px; margin-top:0.2em;
+    }
+    .team-role { font-size:0.99em; color:var(--accent-light);}
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      padding: 2rem 0 1.1rem 0;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 1.17em;
+      background: none;
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.51em;
+      transition: color 0.16s, transform 0.14s;
+    }
+    .contact-link:hover, .contact-link:focus { color: var(--accent-light); transform: translateY(-3px) scale(1.10);}
+    @media (max-width: 550px) {
+      .logo { font-size: 1.05rem;}
+      .hero h1 { font-size: 1.4em; }
+      section { padding: 2.2rem 0.3rem 2rem 0.3rem; }
+      .hero-avatar { width: 81px; height:81px;}
+      .team-list { flex-direction:column; align-items:center;}
+      .feature-card { min-width:70vw;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><!-- EDIT: LOGO/TITLE -->LeafyApp</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#features">Features</a>
+      <a href="#howitworks">How it Works</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="hero">
+      <!-- EDIT: AVATAR/LOGO IMAGE -->
+      <img class="hero-avatar" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80" alt="Avatar or logo"/>
+      <h1><!-- EDIT: HERO TITLE -->Welcome to LeafyApp</h1>
+      <div class="hero-animated-text" id="typedtext"></div>
+      <button class="hero-btn" onclick="document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });">See Our Work</button>
+      <svg class="hero-wave" viewBox="0 0 1440 110"><path d="M0,29 Q720,100 1440,29 L1440,110 L0,110 Z" fill="var(--wave2)"/><path d="M0,45 Q720,0 1440,45 L1440,110 L0,110 Z" fill="var(--wave1)"/><path d="M0,79 Q720,90 1440,79 L1440,110 L0,110 Z" fill="var(--wave3)"/></svg>
+    </section>
+
+    <section id="about" class="anim-left">
+      <h2>About Our App</h2>
+      <div class="about-text"><!-- EDIT: About the app/idea -->
+        LeafyApp is a demonstration project with a clean, animated, nature-inspired style.
+        <br/>Describe what your app does, the problem it solves, or why you made it here!
+      </div>
+    </section>
+
+    <section id="features" class="anim-right">
+      <h2>Features</h2>
+      <div class="features-list">
+        <!-- EDIT: Each .feature-card talks about one main feature -->
+        <div class="feature-card"><h3>Notifications</h3>Get timely reminders to stay on track and take breaks.</div>
+        <div class="feature-card"><h3>Personalized Themes</h3>Choose your own background, nature illustrations, and color styles.</div>
+        <div class="feature-card"><h3>Progress Tracking</h3>Track your session streaks and personal achievements.</div>
+        <div class="feature-card"><h3>Lightweight & Fast</h3>Runs smoothly in any browser—even on mobile devices.</div>
+      </div>
+    </section>
+
+    <section id="howitworks" class="anim-left">
+      <h2>How It Works</h2>
+      <ul class="howitworks-steps">
+        <!-- EDIT: Each <li> is a step/part of the process -->
+        <li>Open LeafyApp on your device or desktop browser.</li>
+        <li>Select your session type and customize your timer or routine.</li>
+        <li>Work or relax, enjoying the animated nature UI.</li>
+        <li>Receive notifications and tips as you go!</li>
+      </ul>
+    </section>
+
+    <section id="skills" class="anim-right">
+      <h2>Our Tech Stack</h2>
+      <div class="skills-list">
+        <!-- EDIT: Add/remove skills as you like -->
+        <div class="skill">HTML5</div>
+        <div class="skill">CSS3 / SCSS</div>
+        <div class="skill">JavaScript</div>
+        <div class="skill">Python</div>
+        <div class="skill">UI/UX Design</div>
+        <div class="skill">React</div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Project Modules</h2>
+      <div class="section-description"><!-- EDIT: Short intro to the project modules/examples -->
+        These are the main sections or modules of our app. Describe or show each part.
+      </div>
+      <div class="projects-grid">
+        <!-- EDIT: Each .project-card is a module/part of your app (or example/demonstration) -->
+        <div class="project-card">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Project image" class="project-image"/>
+          <div class="project-title">Nature Reminder</div>
+          <div class="project-desc">A tool that gently reminds you to take breaks and connect with nature.</div>
+          <div class="project-links">
+            <a class="project-link" href="#" target="_blank">Demo</a>
+            <a class="project-link" href="#" target="_blank">Details</a>
+          </div>
+        </div>
+        <div class="project-card">
+          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80" alt="Project image" class="project-image"/>
+          <div class="project-title">Focus Timer</div>
+          <div class="project-desc">A timer module to help you focus using Pomodoro technique, integrated with leafy visuals.</div>
+          <div class="project-links">
+            <a class="project-link" href="#">Demo</a>
+            <a class="project-link" href="#">Details</a>
+          </div>
+        </div>
+        <!-- Duplicate .project-card blocks to add more modules/examples -->
+      </div>
+    </section>
+
+    <section id="team" class="anim-right">
+      <h2>Team</h2>
+      <div class="section-description"><!-- EDIT: Team intro or heading -->
+        Meet our team members and their roles:
+      </div>
+      <div class="team-list">
+        <!-- EDIT: Each .team-card is a member -->
+        <div class="team-card">
+          <img class="team-img" src="https://randomuser.me/api/portraits/men/75.jpg" alt="Member photo"/><!-- EDIT: member photo -->
+          <div class="team-name">Ali B.</div><!-- EDIT: member name -->
+          <div class="team-role">Frontend Developer</div><!-- EDIT: member role -->
+        </div>
+        <div class="team-card">
+          <img class="team-img" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Member photo"/>
+          <div class="team-name">Sara M.</div>
+          <div class="team-role">UI/UX Designer</div>
+        </div>
+        <!-- Duplicate .team-card for each team member -->
+      </div>
+    </section>
+
+    <section id="contact" class="anim-left">
+      <h2>Contact</h2>
+      <div class="about-text"><!-- EDIT: Contact intro/instructions -->
+        Contact us for feedback or collaboration. Replace these links or this text as needed!
+      </div>
+      <div class="contact-links">
+        <!-- EDIT: Change/add/remove links -->
+        <a class="contact-link" href="mailto:youremail@example.com">Email</a>
+        <a class="contact-link" href="https://github.com/" target="_blank">GitHub</a>
+        <a class="contact-link" href="https://linkedin.com" target="_blank">LinkedIn</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Hero animated text typing (edit lines for your app)
+    const heroTexts = [
+      "Beautiful. Modern. Nature-inspired.",
+      "Customizable for your presentation.",
+      "Easily editable for your school project."
+      // EDIT: Add/remove slogan lines here
+    ];
+    let typei = 0, line = 0;
+    function typeText() {
+      const el = document.getElementById('typedtext');
+      if (!el) return;
+      if (line >= heroTexts.length) return;
+      let txt = heroTexts[line];
+      typei++;
+      el.textContent = txt.substring(0, typei);
+      if (typei < txt.length) {
+        setTimeout(typeText, 42 + Math.random()*30);
+      } else {
+        setTimeout(() => { // next line
+          typei = 0; line++;
+          if (line < heroTexts.length) {
+            setTimeout(typeText, 800);
+          } else if(line === heroTexts.length) {
+            el.style.borderRightColor = "transparent";
+          }
+        }, 950);
+      }
+    }
+    window.addEventListener('DOMContentLoaded',typeText);
+
+    // SHOW/HIDE animation: section, cards, features, hiw steps, team cards
+    function revealEls() {
+      document.querySelectorAll('section').forEach(function(section){const rect=section.getBoundingClientRect();if(rect.top<window.innerHeight*0.92){section.classList.add('visible');}});
+      document.querySelectorAll('.skill').forEach(function(el,i){const rect=el.getBoundingClientRect(); setTimeout(()=>{if(rect.top<window.innerHeight*0.99){el.classList.add('visible')}},i*120);});
+      document.querySelectorAll('.project-card').forEach(function(el,i){const rect=el.getBoundingClientRect(); setTimeout(()=>{if(rect.top<window.innerHeight*0.98){el.classList.add('visible')}},i*110+250);});
+      document.querySelectorAll('.feature-card').forEach(function(el,i){const rect=el.getBoundingClientRect();setTimeout(()=>{if(rect.top<window.innerHeight*0.95){el.classList.add('visible')}},i*190);});
+      // Steps:
+      document.querySelectorAll('.howitworks-steps li').forEach(function(el,i){const rect=el.getBoundingClientRect();setTimeout(()=>{if(rect.top<window.innerHeight*0.97){el.classList.add('visible')}},i*210);});
+      // Team:
+      document.querySelectorAll('.team-card').forEach(function(el,i){const rect=el.getBoundingClientRect();setTimeout(()=>{if(rect.top<window.innerHeight*0.99){el.classList.add('visible')}},i*181);});
+    }
+    window.addEventListener('scroll', revealEls);
+    window.addEventListener('load', revealEls);
+    // Animated scroll for nav links + highlight active section
+    document.querySelectorAll('nav a').forEach(link=>{
+      link.addEventListener('click',function(e){
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({ behavior:"smooth" });
+        }
+      });
+    });
+    window.addEventListener('scroll',()=>{
+      let scrollPos = window.scrollY || document.documentElement.scrollTop;
+      document.querySelectorAll('nav a').forEach(link=>{
+        let sec = document.querySelector(link.getAttribute('href'));
+        if(sec && sec.offsetTop <= scrollPos+100 && sec.offsetTop+sec.offsetHeight > scrollPos+100){
+          link.classList.add('active');
+        }else{
+          link.classList.remove('active');
+        }
+      });
+    },{passive:true});
+  </script>
+</body>
+</html>
